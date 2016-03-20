@@ -109,6 +109,20 @@ public class GUI {
 
     }
     
+    public void updateTable(JTable t) throws ClassNotFoundException, SQLException{
+            DBConnection db = new DBConnection();
+            int count = db.getRowNumber();//-1
+            //debugging 
+           
+            System.out.println("COUNT: " + count);
+            System.out.println(db.getRowNumber());
+            dtm.addRow(new Object[] { count,
+                db.getString("select recgroup.gName from album natural join recgroup natural join recstudio offset " + (count) + " row", "gName"),
+                db.getString("select album.aTitle from album natural join recgroup natural join recstudio  offset "+ (count)+" row", "aTitle"),
+                db.getString("Select recstudio.sName from album natural join recgroup natural join recstudio offset " + (count) + " row", "sName")
+            });
+        }
+    
      class addButtonListener implements ActionListener{
         @Override 
         public void actionPerformed(ActionEvent e){
@@ -211,19 +225,27 @@ public class GUI {
                 System.out.println(err);
             }
             System.out.println("You press " +e.getActionCommand());
-            /*try {
+            try {
+                updateTable(table1);
+                
+                
+                
+                /*try {
                 for(int count =db.getRowNumber(); count<=db.getRowNumber(); count++){
-                    dtm.addRow(new Object[] { count,
-                        db.getString("select gName from album ", "gName"),
-                        db.getString("select aTitle from album ", "aTitle"),
-                        db.getString("Select sName from album ", "sName")
-                            //db.getString("select aTitle from album", "aTitle"),
-                            //db.getString("select sName from recStudio", "sName")
-                    });
+                dtm.addRow(new Object[] { count,
+                db.getString("select gName from album ", "gName"),
+                db.getString("select aTitle from album ", "aTitle"),
+                db.getString("Select sName from album ", "sName")
+                //db.getString("select aTitle from album", "aTitle"),
+                //db.getString("select sName from recStudio", "sName")
+                });
                 }
-            } catch (SQLException ex) {
+                } catch (SQLException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+                }*/
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }//end action performed
         
