@@ -1,0 +1,33 @@
+recording group for db 323
+
+create table recGroup()
+	gName varchar(150) NOT NULL,
+	gSinger varchar(100),
+	gYearFormed int,
+	gGenre varchar(15),
+	primary key (gName)
+)
+create table album(
+	aTitle varchar (255) NOT NULL,
+	gName varchar(150) NOT NULL,
+	sName varchar (150) NOT NULL,
+	aDateRec date,
+	aLength varchar(100),
+	aNumOfSongs int,
+	primary key (aTitle, gName),
+	constraint fk_recGroup foreign key (gName) references recGroup(gName),
+	constraint fk_recStudio foreign key (sName) references recStudio(sName)
+)
+
+create table recStudio(
+	sName varchar(150) NOT NULL,
+	sAddr varchar(255),
+	sOwner varchar(100),
+	sPhone varchar(15),
+	primary key (sName)
+)
+
+
+insert into recGroup values('Kendrick Lamar','Kendrick Lamar',2003,'Hip-Hop');
+insert into recStudio values('Top Dawg','Carson, CA','Anthony Tiffith', NULL);
+insert into album values ('Section 80','Kendrick Lamar', 'Top Dawg', '2011-7-2','59:44', 16)
