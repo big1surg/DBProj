@@ -35,7 +35,7 @@ public class JavaDBProject {
       
       //Initialize our querying variable
       boolean querying = true;
-      
+     
       try (Scanner scan = new Scanner(System.in)) {
            while(querying)
            {
@@ -46,7 +46,7 @@ public class JavaDBProject {
                System.out.println("3. Insert new ablum");
                System.out.println("4. Insert new studio");
                System.out.println("5. Remove an album");
-               System.out.println("6.Exit");
+               System.out.println("6. Exit");
                System.out.println();
                
                System.out.print("Choice: ");
@@ -80,8 +80,9 @@ public class JavaDBProject {
                            
                            //Display values
                            //System.out.print(title);
-                           System.out.print(String.format("%-30s", title));
                            count++;
+                           System.out.print(String.format("%-2d. %-30s", count,title));
+                           
                            if((count%5) == 0){
                                System.out.println();
                            }
@@ -99,6 +100,8 @@ public class JavaDBProject {
                           System.out.println("Error! Could Not get result from the Database");
                      }
                }else if(answer == 2){
+                   System.out.println("------------------------------------------");
+                   System.out.println("DATA FOR SPECIFIC ALBUM");
                    //List all the data for a specified album
                    System.out.print("Enter the title of the album:");
                    
@@ -139,9 +142,13 @@ public class JavaDBProject {
                    }
                    
                    rs.close();
+                   System.out.println("\nPress Enter to Continue");
+                   System.in.read();
                }
                else if(answer == 3)
                {
+                   System.out.println("--------------------------------------------");
+                   System.out.println("INSERT NEW ALBUM INTO DATABASE\n");
                    //Insert a new albulm
                    String title = "";
                    String groupName = "";
@@ -158,7 +165,7 @@ public class JavaDBProject {
                    boolean getGroup = true;
                    while(getGroup)
                    {
-                       System.out.println("Please enter a recording group for the album, from the options below.");
+                       System.out.println("Choose a recording group for " +title + "!");
                        String sql = "SELECT gname FROM recgroup";
                        //Simply loop through the result set for the albulms
                        try (ResultSet rs = stmt.executeQuery(sql)) {
@@ -170,7 +177,7 @@ public class JavaDBProject {
                                String groups = rs.getString("gname");
                                count++;
                                //Display values
-                               System.out.print(String.format("%-30s",groups));
+                               System.out.print(String.format("%-2d. %-30s",count,groups));
                                if((count%5)==0){
                                    System.out.println();
                                }
@@ -188,7 +195,7 @@ public class JavaDBProject {
                         }
                        
                        //Get the input
-                       System.out.print("Recoring Group Choice: ");
+                       System.out.print("Recording Group Choice: ");
                        groupName = scan.nextLine();
                        
                        //Check if it is a valid group
@@ -222,7 +229,7 @@ public class JavaDBProject {
                    boolean getStudio = true;
                    while(getStudio)
                    {
-                       System.out.println("Please enter a recording studio for the album, from the options below.");
+                       System.out.println("\nChoose Recording Studio for "+title+"!\n");
                        String sql = "SELECT sname FROM recstudio";
                        //Simply loop through the result set for the albulms
                        try (ResultSet rs = stmt.executeQuery(sql)) {
@@ -235,7 +242,7 @@ public class JavaDBProject {
                                count++;
                                
                                //Display values
-                               System.out.print(String.format("%-30s",studios));
+                               System.out.print(String.format("%-2d. %-30s",count, studios));
                                if(count%5==0){
                                    System.out.println();
                                }
@@ -253,7 +260,7 @@ public class JavaDBProject {
                         }
                        
                        //Get the input
-                       System.out.print("Recording Studio Choice: ");
+                       System.out.print("\nRecording Studio Choice: ");
                        studioName = scan.nextLine();
                        
                        //Check if it is a valid group
@@ -288,7 +295,7 @@ public class JavaDBProject {
                    while(getDate)
                    {
                        //Tell user to enter a valid date
-                       System.out.print("Please enter a Date that the album was recorded (Format: yyyy-mm-dd): ");
+                       System.out.print("Enter "+title+" recording date (Format: yyyy-mm-dd): ");
                        
                        //Get the input
                        dateRec = scan.nextLine();
@@ -309,14 +316,14 @@ public class JavaDBProject {
                    }
                    
                    //Length Of the Albulm
-                   System.out.print("Length of album:");
+                   System.out.print("Length of "+title+": ");
                    aLength = scan.nextLine();
                    
                    //Number Of Songs
                    boolean isInt = false;
                    while(!isInt)
                    {
-                       System.out.print("Number of songs:");
+                       System.out.print("Number of songs in "+title+": ");
                        numSongs = scan.nextInt();
                        
                        //Try to get the value
@@ -344,7 +351,7 @@ public class JavaDBProject {
                    }
                    
                    //Insert values into the database
-                   System.out.println("Sending to database...");
+                   System.out.println("\nPutting "+title+" into database...");
                    
                    //Create the sql
                    String sql = "INSERT INTO album VALUES "
@@ -359,7 +366,9 @@ public class JavaDBProject {
                    stmt.execute(sql);
                    
                    //Finished!
-                   System.out.println("Success!");
+                   //stmt.close();
+                   System.out.println("\nNow in Database! Press enter to continue: ");
+                   System.in.read();
                    
                }
                else if(answer == 4)
@@ -371,23 +380,23 @@ public class JavaDBProject {
                    String sphone = "";
                    
                    //Get the studio title
-                   System.out.println("Please enter a name for the studio");
+                   System.out.print("Enter a name for the studio: ");
                    sname = scan.nextLine();
                    
                    //Get the studio title
-                   System.out.println("Please enter an address for the studio");
+                   System.out.print("Enter an address for "+sname+": ");
                    saddress = scan.nextLine();
                    
                    //Get the studio title
-                   System.out.println("Please enter an owner for the studio");
+                   System.out.print("Enter an owner for "+sname+": ");
                    sowner = scan.nextLine();
                    
                    //Set the studio phone
-                   System.out.println("Please enter a phone number for the studio (Format: 5555555555)");
+                   System.out.print("Enter a phone number for "+sname+": ");
                    sphone = scan.nextLine();
                    
                    //Insert values into the database
-                   System.out.println("Sending to database...");
+                   System.out.println("Putting into database...");
                    
                    //Create the sql
                    String sql = "INSERT INTO recstudio VALUES "
@@ -400,7 +409,7 @@ public class JavaDBProject {
                    stmt.execute(sql);
                    
                    //Finished!
-                   System.out.println("Success!");
+                   //System.out.println("Success!");
                    
                    
                    
@@ -411,21 +420,27 @@ public class JavaDBProject {
                    String studioName;
                    while(getStudio)
                    {
-                       System.out.println("Please enter a recording studio to update their albums, and make them albums of " + sname
-                               + ", from the options below. You may also enter 'n' if you would not like to do this.");
+                       System.out.println("Enter a recording studio to update their albums. Enter 'q' to opt out.");
                        String sqlStudio = "SELECT sname FROM recstudio";
+                        int count =0;
                        //Simply loop through the result set for the albulms
                        try (ResultSet rs = stmt.executeQuery(sqlStudio)) {
                            //Simply loop through the result set for the albulms
-                           System.out.println("Recording Studios:");
+                           System.out.println("\nRecording Studios:");
+                          
                            while(rs.next()){
                                //Retrieve by column name
                                //Do not display the newly created studio
+                              
                                if(!sname.equalsIgnoreCase(rs.getString("sname")))
                                {
                                    String studios = rs.getString("sname");
                                    //Display values
-                                   System.out.println(studios);
+                                   count++;
+                                   System.out.print(String.format("%-2d. %-30s",count, studios));
+                                   if(count%5==0){
+                                       System.out.println();
+                                   }
                                }
                            }
                            //Close the result set
@@ -440,6 +455,7 @@ public class JavaDBProject {
                         }
                        
                        //Get the input
+                       System.out.print("\n\nYour Choice: ");
                        studioName = scan.nextLine();
                        
                        //Check if it is a valid group
@@ -457,7 +473,7 @@ public class JavaDBProject {
                                System.out.println("Albums have been switched from " + studioName + " into the new studio " + sname +"!");
                                getStudio = false;
                            }
-                           else if (studioName.equalsIgnoreCase("n"))
+                           else if (studioName.equalsIgnoreCase("q"))
                            {
                                //They chose not to have the albums switched over
                                System.out.println("Switching albulms to this studio will not be performed!");
@@ -482,17 +498,49 @@ public class JavaDBProject {
                           System.out.println("Error! Could Not get result from the Database");
                         }
                    }
+                   System.in.read();
                }
                else if(answer == 5)
                {
                    //Delete an albulm
-                   System.out.println("Please enter the title of the album you would like to delete");
-                   
+                   System.out.print("You want to delete an album! ");
+                   String sql = "SELECT atitle FROM album";
+                   //Loop through result set
+                   int count = 0;
+                   try (ResultSet rs = stmt.executeQuery(sql)) {
+                       //Simply loop through the result set for the albulms
+                       System.out.println("\nAlbum Titles:");
+                       while(rs.next()){
+                           //Retrieve by column name
+                           String title = rs.getString("atitle");
+                           
+                           //Display values
+                           //System.out.print(title);
+                           count++;
+                           System.out.print(String.format("%-2d. %-30s", count,title));
+                           
+                           if((count%5) == 0){
+                               System.out.println();
+                           }
+                           
+                       }
+                       
+                       //Close the result set
+                       rs.close();
+                   }
+                    catch(Exception e) {
+                          //Handle errors for Class.forName
+                          e.printStackTrace();
+
+                          //Inform user of error
+                          System.out.println("Error! Could Not get result from the Database");
+                     }
+                   System.out.print("\n\nYour choice: ");
                    //Get the albulm title
                    input = scan.nextLine();
                    
                    //Query the DB
-                   String sql = "SELECT * FROM album WHERE LOWER(atitle) LIKE LOWER('%" + input + "%')";
+                   sql = "SELECT * FROM album WHERE LOWER(atitle) LIKE LOWER('%" + input + "%')";
                    ResultSet rs = stmt.executeQuery(sql);
                    
                    if(rs.next())
@@ -504,14 +552,15 @@ public class JavaDBProject {
                        //Execute the sql
                        stmt.execute(sqlDel);
                        
-                       System.out.println("album deleted!");
+                       System.out.println(input+" deleted!");
                        System.out.println();
                    }
                    else
                    {
-                       System.out.println("That album does not exist...");
+                       System.out.println(input+" does not exist...");
                    }
                    rs.close();
+                   System.in.read();
                    
                }
                else if(answer == 6)
@@ -527,21 +576,15 @@ public class JavaDBProject {
            //Finish the program
        }
        catch(Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
       
             //Inform user of error
             System.out.println("Error! Scanner could not be Created!");
        }
    }catch(SQLException se){
-      //Handle errors for JDBC
-      se.printStackTrace();
       
       //Inform user of error
        System.out.println("Error connecting to the database!");
-   }catch(Exception e){
-      //Handle errors for Class.forName
-      e.printStackTrace();
+   }catch(ClassNotFoundException e){
       
        //Inform user of error
        System.out.println("Error!");
@@ -556,7 +599,6 @@ public class JavaDBProject {
          if(conn!=null)
             conn.close();
       }catch(SQLException se){
-         se.printStackTrace();
          
          //Inform user of error
          System.out.println("Error closing connection to the database!");
